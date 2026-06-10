@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kevin Skvor — Fracciones</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f7f4;
+      --fg: #111;
+      --mid: #888;
+      --light: #e0ddd8;
+      --serif: 'Georgia', 'Times New Roman', serif;
+      --sans: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--serif);
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 52px;
+      background: rgba(248,247,244,0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--light);
+    }
+
+    .site-name {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .header-nav a {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .header-nav a:hover { color: var(--fg); }
+    .header-nav a.active { color: var(--fg); }
+
+    /* ─── HERO ─── */
+    #hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      padding-top: 52px;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 56px;
+    }
+
+    .hero-label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 36px;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: normal;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-family: var(--serif);
+      font-size: clamp(16px, 1.8vw, 22px);
+      font-weight: normal;
+      font-style: italic;
+      color: var(--mid);
+      margin-bottom: 44px;
+    }
+
+    .hero-divider {
+      width: 28px;
+      height: 1px;
+      background: var(--fg);
+      margin-bottom: 36px;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      line-height: 1.85;
+      color: #444;
+      max-width: 440px;
+    }
+
+    .hero-desc p + p {
+      margin-top: 18px;
+    }
+
+    .hero-image {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* ─── GALLERY ─── */
+    #gallery {
+      padding: 96px 48px;
+    }
+
+    .gallery-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 72px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--light);
+    }
+
+    .gallery-header h2 {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    .gallery-header span {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--mid);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 56px 40px;
+    }
+
+    .gallery-item {
+      cursor: pointer;
+      transition: transform 0.35s ease;
+    }
+    .gallery-item:hover { transform: translateY(-4px); }
+
+    .gallery-item img {
+      width: 100%;
+      display: block;
+      border-radius: 10px;
+      transition: opacity 0.35s ease;
+    }
+    .gallery-item:hover img { opacity: 0.85; }
+
+    .gallery-item-num {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--mid);
+      margin-top: 12px;
+    }
+
+    /* ─── SOBRE MÍ ─── */
+    #sobre-mi {
+      padding: 96px 48px;
+      border-top: 1px solid var(--light);
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .sobre-photo-wrap {
+      position: sticky;
+      top: 72px;
+    }
+
+    .sobre-photo-wrap img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .sobre-content {
+      padding-top: 8px;
+    }
+
+    .sobre-label {
+      display: block;
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 32px;
+    }
+
+    .sobre-name {
+      font-family: var(--serif);
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: normal;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .sobre-title {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-style: italic;
+      color: var(--mid);
+      margin-bottom: 40px;
+    }
+
+    .sobre-divider {
+      width: 28px;
+      height: 1px;
+      background: var(--fg);
+      margin-bottom: 36px;
+    }
+
+    .sobre-bio {
+      font-size: 15px;
+      line-height: 1.9;
+      color: #444;
+      max-width: 520px;
+    }
+
+    .sobre-bio p + p {
+      margin-top: 20px;
+    }
+
+    .sobre-detail {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sobre-detail-item {
+      display: flex;
+      gap: 16px;
+      align-items: baseline;
+    }
+
+    .sobre-detail-key {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mid);
+      min-width: 100px;
+    }
+
+    .sobre-detail-val {
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--fg);
+    }
+
+    @media (max-width: 900px) {
+      #sobre-mi {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 64px 24px;
+      }
+      .sobre-photo-wrap {
+        position: static;
+        max-width: 320px;
+      }
+    }
+
+    /* ─── PHOTO VIEWER ─── */
+    #view-photo {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: var(--bg);
+      flex-direction: column;
+    }
+    #view-photo.open { display: flex; }
+
+    .photo-stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 88px 20px;
+      min-height: 0;
+      position: relative;
+    }
+
+    .photo-stage img {
+      max-width: 100%;
+      max-height: calc(100vh - 52px - 56px);
+      object-fit: contain;
+      display: block;
+    }
+
+    .click-prev, .click-next {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 88px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.2s;
+    }
+    .click-prev { left: 0; }
+    .click-next { right: 0; }
+    .click-prev svg, .click-next svg {
+      width: 18px; height: 18px;
+      stroke: var(--fg); fill: none; stroke-width: 1.2;
+      opacity: 0.22;
+      transition: opacity 0.2s;
+    }
+    .click-prev:hover svg, .click-next:hover svg { opacity: 0.75; }
+
+    .photo-footer {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      border-top: 1px solid var(--light);
+      flex-shrink: 0;
+    }
+
+    .photo-footer .back {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+      cursor: pointer;
+      border: none; background: none;
+      transition: color 0.2s;
+      padding: 0;
+    }
+    .photo-footer .back:hover { color: var(--fg); }
+
+    .photo-footer .title {
+      font-family: var(--serif);
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    .photo-footer .counter {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--mid);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 800px) {
+      #hero {
+        grid-template-columns: 1fr;
+      }
+      .hero-image {
+        height: 65vw;
+        order: -1;
+      }
+      .hero-text {
+        padding: 48px 28px 56px;
+      }
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      #gallery { padding: 64px 24px; }
+      #author { padding: 56px 24px 72px; }
+      header { padding: 0 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="site-name" href="#hero">Kevin Skvor</a>
+  <nav class="header-nav">
+    <a href="#sobre-mi">Sobre mí</a>
+    <a href="https://www.instagram.com/skvorportfolio" target="_blank">Contacto</a>
+  </nav>
+</header>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-text">
+    <span class="hero-label">Fotografía &nbsp;·&nbsp; 2026</span>
+    <h1 class="hero-title">Fracciones</h1>
+    <p class="hero-subtitle">El tiempo en cada disparo</p>
+    <div class="hero-divider"></div>
+    <div class="hero-desc">
+      <p>Siempre asociamos la fotografía con la captura de un instante estático. En este trabajo busqué ir más allá: capturar el movimiento, el paso del tiempo mismo.</p>
+      <p>Con apenas variar fracciones de segundo en la obturación, la percepción de la imagen cambia por completo. Es un recordatorio de que cada fracción de segundo tiene un sentido propio —aunque muchas veces sintamos que nada pasa, o que todo es aburrido.</p>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="fotos/DSC_0234.jpg" alt="Fracciones — Kevin Skvor">
+  </div>
+</section>
+
+<!-- ─── GALLERY ─── -->
+<section id="gallery">
+  <div class="gallery-header">
+    <h2>Trabajos</h2>
+    <span>18 fotografías</span>
+  </div>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</section>
+
+<!-- ─── SOBRE MÍ ─── -->
+<section id="sobre-mi">
+  <div class="sobre-photo-wrap">
+    <img src="fotos/autor.png" alt="Kevin Skvor">
+  </div>
+  <div class="sobre-content">
+    <span class="sobre-label">Sobre mí</span>
+    <h2 class="sobre-name">Kevin Skvor</h2>
+    <p class="sobre-title">Diseñador Industrial · Fotógrafo</p>
+    <div class="sobre-divider"></div>
+    <div class="sobre-bio">
+      <p>Me formé como técnico electromecánico, un camino de ciencias exactas que aprendí a valorar. Pero con el tiempo entendí que me faltaba algo: la dimensión humana, el vínculo entre las cosas y las personas que las usan.</p>
+      <p>Eso me llevó al Diseño Industrial en la Universidad de Palermo. Rápido descubrí que diseñar es, antes que nada, comunicar. Y ahí fue donde la fotografía entró en escena: no como hobby, sino como herramienta. Una forma de ver con más intención, de observar el entorno y traducirlo en imágenes que digan algo.</p>
+    </div>
+    <div class="sobre-detail">
+      <div class="sobre-detail-item">
+        <span class="sobre-detail-key">Carrera</span>
+        <span class="sobre-detail-val">Diseño Industrial</span>
+      </div>
+      <div class="sobre-detail-item">
+        <span class="sobre-detail-key">Universidad</span>
+        <span class="sobre-detail-val">Universidad de Palermo</span>
+      </div>
+      <div class="sobre-detail-item">
+        <span class="sobre-detail-key">Materia</span>
+        <span class="sobre-detail-val">Fotografía</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PHOTO VIEWER ─── -->
+<div id="view-photo">
+  <div class="photo-stage">
+    <div class="click-prev" id="click-prev">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+    <img id="photo-img" src="" alt="">
+    <div class="click-next" id="click-next">
+      <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+    </div>
+  </div>
+  <footer class="photo-footer">
+    <button class="back" id="btn-back">← Volver</button>
+    <span class="title" id="photo-title"></span>
+    <span class="counter" id="photo-counter"></span>
+  </footer>
+</div>
+
+<script>
+  const photos = [
+    { src: "fotos/DSC_0167.jpg", title: "01" },
+    { src: "fotos/DSC_0171.jpg", title: "02" },
+    { src: "fotos/DSC_0176.jpg", title: "03" },
+    { src: "fotos/DSC_0178.jpg", title: "04" },
+    { src: "fotos/DSC_0182.jpg", title: "05" },
+    { src: "fotos/DSC_0183.jpg", title: "06" },
+    { src: "fotos/DSC_0193.jpg", title: "07" },
+    { src: "fotos/DSC_0195.jpg", title: "08" },
+    { src: "fotos/DSC_0197.jpg", title: "09" },
+    { src: "fotos/DSC_0203.jpg", title: "10" },
+    { src: "fotos/DSC_0206.jpg", title: "11" },
+    { src: "fotos/DSC_0207.jpg", title: "12" },
+    { src: "fotos/DSC_0214.jpg", title: "13" },
+    { src: "fotos/DSC_0215.jpg", title: "14" },
+    { src: "fotos/DSC_0216.jpg", title: "15" },
+    { src: "fotos/DSC_0224.jpg", title: "16" },
+    { src: "fotos/DSC_0230.jpg", title: "17" },
+    { src: "fotos/DSC_0231.jpg", title: "18" },
+  ];
+
+  const grid      = document.getElementById('gallery-grid');
+  const photoView = document.getElementById('view-photo');
+  const photoImg  = document.getElementById('photo-img');
+  const photoTitle = document.getElementById('photo-title');
+  const photoCount = document.getElementById('photo-counter');
+  let current = 0;
+
+  photos.forEach(({ src, title }, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = title;
+    img.loading = 'lazy';
+
+    const num = document.createElement('p');
+    num.className = 'gallery-item-num';
+    num.textContent = title;
+
+    item.appendChild(img);
+    item.appendChild(num);
+    item.addEventListener('click', () => openPhoto(i));
+    grid.appendChild(item);
+  });
+
+  function openPhoto(index) {
+    current = index;
+    photoView.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    updatePhoto();
+  }
+
+  function updatePhoto() {
+    const { src, title } = photos[current];
+    photoImg.src = src;
+    photoTitle.textContent = title;
+    photoCount.textContent = `${String(current + 1).padStart(2, '0')} / ${String(photos.length).padStart(2, '0')}`;
+  }
+
+  function closeViewer() {
+    photoView.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function prev() { current = (current - 1 + photos.length) % photos.length; updatePhoto(); }
+  function next() { current = (current + 1) % photos.length; updatePhoto(); }
+
+  document.getElementById('click-prev').addEventListener('click', prev);
+  document.getElementById('click-next').addEventListener('click', next);
+  document.getElementById('btn-back').addEventListener('click', closeViewer);
+
+  document.addEventListener('keydown', e => {
+    if (!photoView.classList.contains('open')) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prev();
+    if (e.key === 'Escape') closeViewer();
+  });
+
+  let tx = null;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    if (tx === null || !photoView.classList.contains('open')) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) dx < 0 ? next() : prev();
+    tx = null;
+  });
+</script>
+</body>
+</html>
