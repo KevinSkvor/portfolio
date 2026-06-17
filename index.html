@@ -581,7 +581,7 @@
 
     const num = document.createElement('p');
     num.className = 'gallery-item-num';
-    num.textContent = title;
+    num.textContent = String(i + 1).padStart(2, '0');
 
     item.appendChild(img);
     item.appendChild(num);
