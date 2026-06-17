@@ -76,8 +76,8 @@
     .hero-text {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 80px 56px;
+      justify-content: flex-start;
+      padding: 56px 48px 64px;
     }
 
     .hero-label {
@@ -87,47 +87,49 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--mid);
-      margin-bottom: 36px;
+      margin-bottom: 20px;
     }
 
     .hero-title {
       font-family: var(--serif);
-      font-size: clamp(40px, 5vw, 64px);
+      font-size: clamp(36px, 4vw, 56px);
       font-weight: normal;
       line-height: 1.05;
       letter-spacing: -0.02em;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .hero-subtitle {
       font-family: var(--serif);
-      font-size: clamp(16px, 1.8vw, 22px);
+      font-size: clamp(15px, 1.6vw, 20px);
       font-weight: normal;
       font-style: italic;
       color: var(--mid);
-      margin-bottom: 44px;
+      margin-bottom: 28px;
     }
 
     .hero-divider {
       width: 28px;
       height: 1px;
       background: var(--fg);
-      margin-bottom: 36px;
+      margin-bottom: 24px;
     }
 
     .hero-desc {
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.85;
       color: #444;
       max-width: 440px;
     }
 
     .hero-desc p + p {
-      margin-top: 18px;
+      margin-top: 16px;
     }
 
     .hero-image {
-      position: relative;
+      position: sticky;
+      top: 52px;
+      height: calc(100vh - 52px);
       overflow: hidden;
     }
 
